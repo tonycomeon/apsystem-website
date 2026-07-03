@@ -477,8 +477,8 @@ img, svg { display: block; max-width: 100%; }
   padding-left: 10px;
 }
 .clients-list__logo {
-  width: 24px;
-  height: 24px;
+  width: auto;
+  height: 1em;
   object-fit: contain;
   flex-shrink: 0;
 }
