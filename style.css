@@ -1,0 +1,643 @@
+/* ============================================
+   1. 디자인 토큰 (색상 / 폰트 / 간격을 한 곳에서 관리)
+   ============================================ */
+:root {
+  --bg: #FFFFFF;          /* 전체 배경 - 화이트 */
+  --surface: #F5F6F8;     /* 카드 배경 - 아주 옅은 그레이 */
+  --ink: #1C1C1C;         /* 기본 텍스트(거의 검정) */
+  --ink-muted: #6B6B6B;   /* 보조 텍스트 - 로고 옆 회색 톤 */
+  --accent: #05308F;      /* 브랜드 네이비 블루 - 강조/CTA */
+  --accent-2: #3D63C4;    /* 밝은 네이비 - 보조 강조, 어두운 배경 위 텍스트용 */
+  --brand-dark: #041F5E;  /* 짙은 네이비 - 헤더/푸터 등 배경용 */
+  --line: rgba(5, 48, 143, 0.14);
+
+  --font-kr: 'Pretendard', -apple-system, sans-serif;
+  --font-num: 'Space Grotesk', var(--font-kr);
+
+  --container-w: 1120px;
+}
+
+/* ============================================
+   2. 리셋 & 기본 세팅
+   ============================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-kr);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+img, svg { display: block; max-width: 100%; }
+
+.container {
+  max-width: var(--container-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.eyebrow {
+  font-family: var(--font-num);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+}
+
+.section-desc {
+  color: var(--ink-muted);
+  max-width: 620px;
+  font-size: 16px;
+}
+
+/* ============================================
+   3. 버튼
+   ============================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 26px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 15px;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.btn--primary {
+  background: var(--accent);
+  color: #FFFFFF;
+}
+.btn--primary:hover { transform: translateY(-2px); background: var(--brand-dark); }
+
+.btn--outline {
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+}
+.btn--outline:hover { transform: translateY(-2px); background: var(--accent); color: #FFFFFF; }
+
+.btn--ghost {
+  font-family: var(--font-num);
+  font-weight: 700;
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  padding: 9px 18px;
+}
+.btn--ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ============================================
+   4. 헤더
+   ============================================ */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  will-change: transform; /* 스크롤 중 별도 레이어로 합성해 버벅임 완화 */
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: 76px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+}
+.logo__img {
+  height: 22px;
+  width: auto;
+  display: block;
+}
+.logo__mark { color: var(--accent); display: inline-flex; }
+
+.nav ul { display: flex; gap: 32px; }
+.nav a {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  transition: color 0.15s ease;
+}
+.nav a:hover { color: var(--ink); }
+
+.nav__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.nav__toggle span {
+  width: 100%;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+}
+
+/* ============================================
+   5. 히어로
+   ============================================ */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0 100px;
+}
+
+.hero__rings {
+  position: absolute;
+  right: -140px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 600px;
+  opacity: 0.9;
+  pointer-events: none;
+}
+.ring {
+  fill: none;
+  stroke: var(--accent-2);
+  stroke-width: 1.4;
+}
+.ring--1 { opacity: 0.55; }
+.ring--2 { opacity: 0.35; }
+.ring--3 { opacity: 0.2; }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.55; }
+  50% { transform: scale(1.05); opacity: 0.85; }
+}
+.ring--1 { transform-origin: 300px 300px; animation: pulse 3.2s ease-in-out infinite; }
+
+.hero__inner { position: relative; max-width: 640px; }
+
+.hero__title {
+  font-size: clamp(34px, 5vw, 54px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  margin-bottom: 22px;
+}
+.hero__title .highlight { color: var(--accent); }
+
+.hero__desc {
+  font-size: 17px;
+  color: var(--ink-muted);
+  margin-bottom: 34px;
+}
+
+.hero__cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* ============================================
+   6. 신뢰 지표 바
+   ============================================ */
+.stats {
+  background: var(--brand-dark);
+  color: var(--bg);
+}
+.stats__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 34px 24px;
+  justify-content: space-between;
+}
+.stat { display: flex; flex-direction: column; gap: 6px; }
+.stat__num {
+  font-family: var(--font-num);
+  font-size: 22px;
+  font-weight: 700;
+}
+.stat__label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.03em;
+}
+
+/* ============================================
+   7. 회사소개
+   ============================================ */
+.about { padding: 100px 0; }
+.about__inner { max-width: 760px; }
+
+/* 회사소개 인용구 */
+.about__quote {
+  border-left: 3px solid var(--accent);
+  padding: 4px 0 4px 20px;
+  margin: 28px 0;
+  font-size: 18px;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ============================================
+   7-1. 연혁
+   ============================================ */
+.history { padding: 0 0 100px; }
+
+.history-list {
+  margin-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.history-list li {
+  display: flex;
+  gap: 28px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: baseline;
+}
+.history-list__date {
+  font-family: var(--font-num);
+  font-weight: 700;
+  color: var(--accent);
+  width: 90px;
+  flex-shrink: 0;
+}
+.history-list__text {
+  font-size: 15px;
+  color: var(--ink);
+}
+
+/* ============================================
+   8. 렌탈상품
+   ============================================ */
+.products { padding: 20px 0 100px; }
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+  align-items: start;
+}
+
+.product-card {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 36px;
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(5, 48, 143, 0.1);
+}
+
+.product-card--accent {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+.product-card--accent .product-card__icon { color: var(--accent-2); }
+.product-card--accent .product-card__list li::before { background: var(--accent-2); }
+
+.product-card__icon { color: var(--accent); margin-bottom: 18px; }
+.product-card h3 { font-size: 21px; font-weight: 800; margin-bottom: 10px; }
+.product-card > p { color: var(--ink-muted); font-size: 15px; margin-bottom: 20px; }
+.product-card--accent > p { color: rgba(255, 255, 255, 0.75); }
+
+.product-card__list li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.product-card__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* 마우스 오버 시 세로로 펼쳐지며 나타나는 제품 사진 영역 */
+.product-card__reveal {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.product-card__reveal-inner {
+  text-align: center;
+  padding-top: 22px;
+  margin-top: 22px;
+  border-top: 1px dashed var(--line);
+}
+.product-card__reveal img {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto 10px;
+  object-fit: contain;
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 14px rgba(5, 48, 143, 0.12);
+}
+.product-card__reveal-caption {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+.product-card:hover .product-card__reveal,
+.product-card.is-revealed .product-card__reveal {
+  max-height: 300px;
+}
+.product-card--accent .product-card__reveal-caption { color: rgba(255, 255, 255, 0.8); }
+.product-card--accent:hover .product-card__reveal-inner { border-top-color: rgba(255, 255, 255, 0.25); }
+
+/* 렌탈상품 보기로 펼쳐진 상태 - 클릭하면 스마트스토어로 이동함을 암시 */
+.product-card.is-revealed {
+  cursor: pointer;
+}
+.product-card.is-revealed:hover {
+  box-shadow: 0 16px 40px rgba(5, 48, 143, 0.14);
+}
+
+/* 한 카드 안에 제품 사진 2개를 나란히 보여줄 때 */
+.product-card__reveal--dual {
+  display: flex;
+  gap: 16px;
+}
+.product-card__reveal-item {
+  flex: 1;
+  min-width: 0;
+}
+.product-card__reveal--dual img {
+  max-width: 130px;
+  height: 90px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 860px) {
+  .product-card__reveal { display: none; }
+}
+
+/* ============================================
+   9. 포트폴리오
+   ============================================ */
+.portfolio { padding: 20px 0 100px; }
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+.portfolio-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 26px;
+}
+.portfolio-card__tag {
+  display: inline-block;
+  font-family: var(--font-num);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(5, 48, 143, 0.08);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+.portfolio-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.portfolio-card p { font-size: 14px; color: var(--ink-muted); }
+
+/* ============================================
+   9-1. 고객사
+   ============================================ */
+.clients { padding: 20px 0 100px; }
+
+.clients-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+.clients-list li {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  transition: transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+.clients-list li:hover {
+  transform: scale(1.08);
+  color: var(--ink);
+  border-color: var(--accent);
+  box-shadow: 0 6px 16px rgba(5, 48, 143, 0.12);
+}
+
+/* 로고 이미지가 들어간 고객사 항목 (경기도교육청 등) */
+.clients-list__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 10px;
+}
+.clients-list__logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   10. 푸터
+   ============================================ */
+.footer {
+  background: var(--brand-dark);
+  color: var(--bg);
+  padding: 64px 0 0;
+}
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+.footer__brand { display: flex; flex-direction: column; gap: 6px; max-width: 260px; }
+.footer__brand .logo__mark { color: var(--accent-2); }
+.footer__brand strong { font-family: var(--font-num); font-size: 18px; }
+.footer__brand p { font-size: 13px; color: rgba(255, 255, 255, 0.6); }
+
+.footer__info p {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.85);
+}
+.footer__info span {
+  display: inline-block;
+  width: 52px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+}
+.footer__info a:hover { color: var(--accent-2); }
+
+.footer__bottom {
+  padding: 22px 24px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ============================================
+   11. 반응형 (모바일)
+   ============================================ */
+@media (max-width: 860px) {
+  .nav { display: none; }
+  .nav__toggle { display: flex; }
+  .header__tel { display: none; }
+  .product-grid { grid-template-columns: 1fr; }
+  .portfolio-grid { grid-template-columns: 1fr; }
+  .hero__rings { display: none; }
+  .hero { padding: 80px 0 60px; }
+
+  /* 모바일 메뉴가 열렸을 때 - script.js에서 .is-open을 붙였다 뗐다 함 */
+  .nav.is-open {
+    display: block;
+    position: absolute;
+    top: 76px;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 24px 20px;
+  }
+  .nav.is-open ul { flex-direction: column; gap: 4px; }
+  .nav.is-open a { display: block; padding: 12px 0; }
+}
+
+/* 스크롤 시 등장 애니메이션용 클래스 (JS에서 추가) */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* ============================================
+   12. 전화번호 팝업
+   ============================================ */
+.call-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.call-modal.is-open { display: flex; }
+
+.call-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 31, 94, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.call-modal__box {
+  position: relative;
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 40px 36px;
+  max-width: 340px;
+  width: calc(100% - 48px);
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(4, 31, 94, 0.35);
+  animation: callModalIn 0.25s ease;
+}
+@keyframes callModalIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.call-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--ink-muted);
+  cursor: pointer;
+}
+.call-modal__close:hover { color: var(--ink); }
+
+.call-modal__eyebrow {
+  font-family: var(--font-num);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+}
+.call-modal__number {
+  font-family: var(--font-num);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.call-modal__desc {
+  font-size: 14px;
+  color: var(--ink-muted);
+  margin-bottom: 26px;
+}
+.call-modal__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.call-modal__actions .btn { width: 100%; }
